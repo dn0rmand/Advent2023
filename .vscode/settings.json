@@ -4,5 +4,6 @@
   "typescript.preferences.quoteStyle": "single",
   "editor.tabSize": 2,
   "editor.useTabStops": false,
-  "editor.wordWrapColumn": 120
+  "editor.wordWrapColumn": 120,
+  "prettier.printWidth": 128
 }

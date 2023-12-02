@@ -1,7 +1,8 @@
 import { Day } from "./tools/day.ts";
 import { Day1 } from "./day1.ts";
+import { Day2 } from "./day2.ts";
 
-const days: Day[] = [new Day1()];
+const days: Day[] = [new Day1(), new Day2()];
 
 type TimeEntry = {
   duration: number;
@@ -42,8 +43,6 @@ console.log("");
 console.log(times["advent-2023"].message);
 times["advent-2023"].duration = 0; // For the sorting
 
-const order = Object.values(times).sort((a: TimeEntry, b: TimeEntry) =>
-  compare(b, a)
-);
+const order = Object.values(times).sort((a: TimeEntry, b: TimeEntry) => compare(b, a));
 
 console.log(`Slowest: ${order[0].message}`);
