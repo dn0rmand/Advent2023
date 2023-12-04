@@ -1,8 +1,10 @@
 import { Day } from "./tools/day.ts";
 import { Day1 } from "./day1.ts";
 import { Day2 } from "./day2.ts";
+import { Day3 } from "./day3.ts";
+import { Day4 } from "./day4.ts";
 
-const days: Day[] = [new Day1(), new Day2()];
+const days: Day[] = [new Day1(), new Day2(), new Day3(), new Day4()];
 
 type TimeEntry = {
   duration: number;
