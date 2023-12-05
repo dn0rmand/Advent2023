@@ -1,0 +1,329 @@
+{
+  "event": "2023",
+  "owner_id": 20724,
+  "members": {
+    "20724": {
+      "id": 20724,
+      "local_score": 0,
+      "name": "Matt Ferlo",
+      "last_star_ts": 0,
+      "global_score": 0,
+      "stars": 0,
+      "completion_day_level": {}
+    },
+    "107354": {
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "star_index": 168147,
+            "get_star_ts": 1701451297
+          },
+          "2": {
+            "star_index": 189503,
+            "get_star_ts": 1701457306
+          }
+        },
+        "2": {
+          "1": {
+            "star_index": 293317,
+            "get_star_ts": 1701497120
+          },
+          "2": {
+            "get_star_ts": 1701497417,
+            "star_index": 294464
+          }
+        },
+        "3": {
+          "1": {
+            "get_star_ts": 1701619229,
+            "star_index": 660054
+          },
+          "2": {
+            "get_star_ts": 1701621975,
+            "star_index": 669192
+          }
+        },
+        "4": {
+          "1": {
+            "star_index": 786850,
+            "get_star_ts": 1701667811
+          },
+          "2": {
+            "star_index": 797411,
+            "get_star_ts": 1701669598
+          }
+        },
+        "5": {
+          "1": {
+            "star_index": 1076833,
+            "get_star_ts": 1701760267
+          }
+        }
+      },
+      "stars": 9,
+      "global_score": 0,
+      "last_star_ts": 1701760267,
+      "name": "Nick",
+      "local_score": 141,
+      "id": 107354
+    },
+    "109673": {
+      "stars": 0,
+      "completion_day_level": {},
+      "name": "Stephen Jessiman",
+      "last_star_ts": 0,
+      "global_score": 0,
+      "id": 109673,
+      "local_score": 0
+    },
+    "120900": {
+      "completion_day_level": {},
+      "stars": 0,
+      "global_score": 0,
+      "last_star_ts": 0,
+      "name": "Troy Barnes",
+      "local_score": 0,
+      "id": 120900
+    },
+    "147754": {
+      "id": 147754,
+      "local_score": 154,
+      "stars": 10,
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1701447869,
+            "star_index": 154605
+          },
+          "2": {
+            "get_star_ts": 1701453577,
+            "star_index": 176555
+          }
+        },
+        "2": {
+          "1": {
+            "star_index": 396643,
+            "get_star_ts": 1701525075
+          },
+          "2": {
+            "star_index": 398884,
+            "get_star_ts": 1701525694
+          }
+        },
+        "3": {
+          "1": {
+            "star_index": 647468,
+            "get_star_ts": 1701615367
+          },
+          "2": {
+            "star_index": 679328,
+            "get_star_ts": 1701624981
+          }
+        },
+        "4": {
+          "1": {
+            "get_star_ts": 1701698193,
+            "star_index": 907859
+          },
+          "2": {
+            "star_index": 910495,
+            "get_star_ts": 1701698890
+          }
+        },
+        "5": {
+          "1": {
+            "get_star_ts": 1701788041,
+            "star_index": 1147202
+          },
+          "2": {
+            "star_index": 1158121,
+            "get_star_ts": 1701792013
+          }
+        }
+      },
+      "last_star_ts": 1701792013,
+      "name": "Dominique Normand",
+      "global_score": 0
+    },
+    "151555": {
+      "local_score": 170,
+      "id": 151555,
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "star_index": 0,
+            "get_star_ts": 1701406970
+          },
+          "2": {
+            "get_star_ts": 1701408732,
+            "star_index": 13372
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1701493610,
+            "star_index": 268487
+          },
+          "2": {
+            "get_star_ts": 1701493683,
+            "star_index": 268954
+          }
+        },
+        "3": {
+          "1": {
+            "get_star_ts": 1701591347,
+            "star_index": 571102
+          },
+          "2": {
+            "get_star_ts": 1701591814,
+            "star_index": 572208
+          }
+        },
+        "4": {
+          "1": {
+            "star_index": 771557,
+            "get_star_ts": 1701666262
+          },
+          "2": {
+            "star_index": 775706,
+            "get_star_ts": 1701666675
+          }
+        },
+        "5": {
+          "1": {
+            "star_index": 1054028,
+            "get_star_ts": 1701753383
+          },
+          "2": {
+            "get_star_ts": 1701753903,
+            "star_index": 1055838
+          }
+        }
+      },
+      "stars": 10,
+      "global_score": 25,
+      "name": "Murray Edwards",
+      "last_star_ts": 1701753903
+    },
+    "160656": {
+      "global_score": 0,
+      "last_star_ts": 0,
+      "name": "MR Bednar",
+      "completion_day_level": {},
+      "stars": 0,
+      "local_score": 0,
+      "id": 160656
+    },
+    "188623": {
+      "id": 188623,
+      "local_score": 0,
+      "name": "Eric Holton",
+      "last_star_ts": 0,
+      "global_score": 0,
+      "stars": 0,
+      "completion_day_level": {}
+    },
+    "197653": {
+      "local_score": 0,
+      "id": 197653,
+      "global_score": 0,
+      "last_star_ts": 0,
+      "name": "Trent Macomber",
+      "completion_day_level": {},
+      "stars": 0
+    },
+    "198084": {
+      "global_score": 0,
+      "last_star_ts": 0,
+      "name": "Seshi Chemudugunta",
+      "completion_day_level": {},
+      "stars": 0,
+      "local_score": 0,
+      "id": 198084
+    },
+    "200180": {
+      "id": 200180,
+      "local_score": 0,
+      "last_star_ts": 0,
+      "name": "Myron McMillin",
+      "global_score": 0,
+      "stars": 0,
+      "completion_day_level": {}
+    },
+    "373368": {
+      "last_star_ts": 0,
+      "name": "Prasanna Dupaguntla",
+      "global_score": 0,
+      "stars": 0,
+      "completion_day_level": {},
+      "id": 373368,
+      "local_score": 0
+    },
+    "471153": {
+      "stars": 0,
+      "completion_day_level": {},
+      "last_star_ts": 0,
+      "name": "Mahalakshmi Velayudhan",
+      "global_score": 0,
+      "id": 471153,
+      "local_score": 0
+    },
+    "499187": {
+      "name": "Yuanyuan Deng",
+      "last_star_ts": 0,
+      "global_score": 0,
+      "stars": 0,
+      "completion_day_level": {},
+      "id": 499187,
+      "local_score": 0
+    },
+    "499224": {
+      "local_score": 0,
+      "id": 499224,
+      "global_score": 0,
+      "last_star_ts": 0,
+      "name": null,
+      "completion_day_level": {},
+      "stars": 0
+    },
+    "1503142": {
+      "global_score": 0,
+      "name": "Erin Martell",
+      "last_star_ts": 1701745737,
+      "completion_day_level": {
+        "1": {
+          "1": {
+            "get_star_ts": 1701705778,
+            "star_index": 936517
+          },
+          "2": {
+            "get_star_ts": 1701729050,
+            "star_index": 1018640
+          }
+        },
+        "2": {
+          "1": {
+            "get_star_ts": 1701745069,
+            "star_index": 1044417
+          },
+          "2": {
+            "get_star_ts": 1701745737,
+            "star_index": 1045190
+          }
+        }
+      },
+      "stars": 4,
+      "local_score": 56,
+      "id": 1503142
+    },
+    "1503254": {
+      "local_score": 0,
+      "id": 1503254,
+      "completion_day_level": {},
+      "stars": 0,
+      "global_score": 0,
+      "name": "Richa Gor",
+      "last_star_ts": 0
+    }
+  }
+}

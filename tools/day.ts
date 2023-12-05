@@ -16,10 +16,7 @@ export abstract class Day {
 
   timeEnd(name: string) {
     const key = name.toLowerCase().replace("  ", "-");
-    console.timeLog(
-      `day${this.day}:${key}`,
-      `to execute ${name} of day ${this.day}`
-    );
+    console.timeLog(`day${this.day}:${key}`, `to ${name === "input" ? "parse" : "execute"} ${name} of day ${this.day}`);
   }
 
   readDataFile(): string[] {

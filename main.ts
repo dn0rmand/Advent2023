@@ -3,8 +3,9 @@ import { Day1 } from "./day1.ts";
 import { Day2 } from "./day2.ts";
 import { Day3 } from "./day3.ts";
 import { Day4 } from "./day4.ts";
+import { Day5 } from "./day5.ts";
 
-const days: Day[] = [new Day1(), new Day2(), new Day3(), new Day4()];
+const days: Day[] = [new Day1(), new Day2(), new Day3(), new Day4(), new Day5()];
 
 type TimeEntry = {
   duration: number;
@@ -48,3 +49,6 @@ times["advent-2023"].duration = 0; // For the sorting
 const order = Object.values(times).sort((a: TimeEntry, b: TimeEntry) => compare(b, a));
 
 console.log(`Slowest: ${order[0].message}`);
+for (const key in times) {
+  console.log(times[key].message);
+}

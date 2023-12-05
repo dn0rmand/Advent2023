@@ -1,1 +1,2 @@
 *.DS_Store
+/board/node_modules/
