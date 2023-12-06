@@ -1,2 +1,3 @@
 *.DS_Store
 /board/node_modules/
+/day0.ts
