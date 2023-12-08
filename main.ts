@@ -6,8 +6,9 @@ import { Day4 } from "./day4.ts";
 import { Day5 } from "./day5.ts";
 import { Day6 } from "./day6.ts";
 import { Day7 } from "./day7.ts";
+import { Day8 } from "./day8.ts";
 
-const days: Day[] = [new Day1(), new Day2(), new Day3(), new Day4(), new Day5(), new Day6(), new Day7()];
+const days: Day[] = [new Day1(), new Day2(), new Day3(), new Day4(), new Day5(), new Day6(), new Day7(), new Day8()];
 
 type TimeEntry = {
   duration: number;
