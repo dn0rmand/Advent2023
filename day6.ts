@@ -88,6 +88,7 @@ export class Day6 extends Day {
   part2(input: Input[]): number {
     const time = +input.reduce((a, { time }) => `${a}${time}`, "");
     const distance = +input.reduce((a, { distance }) => `${a}${distance}`, "");
+
     return this.getWins(time, distance);
   }
 }
