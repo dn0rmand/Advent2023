@@ -1,20 +1,18 @@
 import { Day } from "./tools/day.ts";
 
-type Value = {
+const HEIGHT = 140;
+const WIDTH = 140;
+
+type Num = {
   value: number;
-  y: number;
   x: number;
-  width: number;
-  hasSymbols: boolean;
+  y: number;
 };
 
 class Day3Input {
+  private input: string[];
   private height: number = 0;
   private width: number = 0;
-  private symbols: { [id: number]: number[] } = {};
-
-  public gears: { [id: number]: number[] } = {};
-  public values: Value[] = [];
 
   makeKey(x: number, y: number): number {
     if (x < 0 || y < 0 || x >= this.width || y >= this.height) {
@@ -24,86 +22,60 @@ class Day3Input {
     }
   }
 
-  *inputIterator(input: string[]): Generator<{ x: number; y: number; c: string; digit: boolean; symbol: boolean }> {
+  get(x: number, y: number): string {
+    if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+      return ".";
+    }
+    return this.input[y][x];
+  }
+
+  *symbolIterator(): Generator<{ x: number; y: number; c: string }> {
     for (let y = 0; y < this.height; y++) {
-      const line = input[y];
-      let wasDigit = false;
+      const line = this.input[y];
       for (let x = 0; x < this.width; x++) {
         const c = line[x];
-        if (c >= "0" && c <= "9") {
-          wasDigit = true;
-          yield { x, y, c, digit: true, symbol: false };
-        } else if (c !== ".") {
-          wasDigit = false;
-          yield { x, y, c, digit: false, symbol: true };
-        } else if (wasDigit) {
-          wasDigit = false;
-          yield { x, y, c, digit: false, symbol: false };
+        if (c !== "." && (c < "0" || c > "9")) {
+          yield { x, y, c };
         }
       }
     }
   }
 
-  addSymbol(c: string, key: number) {
-    this.symbols[key] = [];
-
-    if (c === "*") {
-      this.gears[key] = [];
+  getValueAt(x: number, y: number, left: boolean, right: boolean): Num | undefined {
+    let c = this.get(x, y);
+    if (c < "0" || c > "9") {
+      return undefined;
     }
-  }
-
-  addValue(value: Value, key: number | undefined = undefined) {
-    if (key !== undefined) {
-      if (this.symbols[key]) {
-        value.hasSymbols = true;
-        this.symbols[key].push(value.value);
-      }
-      if (this.gears[key]) {
-        value.hasSymbols = true;
-        this.gears[key].push(value.value);
-      }
-    } else {
-      for (let x = value.x - 1; x <= value.x + value.width; x++) {
-        this.addValue(value, this.makeKey(x, value.y - 1));
-        this.addValue(value, this.makeKey(x, value.y));
-        this.addValue(value, this.makeKey(x, value.y + 1));
-      }
-    }
-  }
-
-  mapInput(input: string[]) {
-    let value: Value | undefined = undefined;
-
-    for (const { x, y, c, digit, symbol } of this.inputIterator(input)) {
-      if (digit) {
-        if (value !== undefined) {
-          value.width++;
-          value.value = value.value * 10 + +c;
-        } else {
-          value = { value: +c, y, x, width: 1, hasSymbols: false };
+    let X = x;
+    const value: string[] = [c];
+    if (left) {
+      while (true) {
+        c = this.get(X - 1, y);
+        if (c < "0" || c > "9") {
+          break;
         }
-      } else {
-        if (value) {
-          this.values.push(value);
-          value = undefined;
-        }
-        if (symbol) {
-          this.addSymbol(c, this.makeKey(x, y));
-        }
+        value.unshift(c);
+        X--;
       }
     }
 
-    if (value) {
-      this.values.push(value);
+    if (right) {
+      for (let i = 1; ; i++) {
+        c = this.get(x + i, y);
+        if (c < "0" || c > "9") {
+          break;
+        }
+        value.push(c);
+      }
     }
 
-    this.values.forEach((value) => this.addValue(value));
+    return { x, y, value: +value.join("") };
   }
 
   constructor(input: string[]) {
+    this.input = input;
     this.height = input.length;
     this.width = input[0].length;
-    this.mapInput(input);
   }
 }
 
@@ -118,15 +90,90 @@ export class Day3 extends Day {
   }
 
   part1(input: Day3Input): number {
-    const total = input.values.reduce((sum: number, value: Value) => sum + (value.hasSymbols ? value.value : 0), 0);
-    return total;
+    const visited: boolean[] = [];
+
+    let answer: number = 0;
+
+    const add = (value: Num | undefined): Num | undefined => {
+      if (value !== undefined) {
+        const k = input.makeKey(value.x, value.y);
+        if (!visited[k]) {
+          visited[k] = true;
+          answer += value.value;
+        }
+        return value;
+      }
+    };
+
+    for (const { x, y } of input.symbolIterator()) {
+      const up = add(input.getValueAt(x, y - 1, true, true));
+      const down = add(input.getValueAt(x, y + 1, true, true));
+      const left = add(input.getValueAt(x - 1, y, true, false));
+      const right = add(input.getValueAt(x + 1, y, false, true));
+
+      if (!up && !left) {
+        add(input.getValueAt(x - 1, y - 1, true, true));
+      }
+      if (!down && !left) {
+        add(input.getValueAt(x - 1, y + 1, true, true));
+      }
+      if (!up && !right) {
+        add(input.getValueAt(x + 1, y - 1, true, true));
+      }
+      if (!down && !right) {
+        add(input.getValueAt(x + 1, y + 1, true, true));
+      }
+    }
+
+    return answer;
   }
 
   part2(input: Day3Input): number {
-    const goodGears: number[] = Object.values(input.gears)
-      .filter((numbers: number[]) => numbers.length === 2)
-      .map((values: number[]) => values[0] * values[1]);
-    const answer = goodGears.reduce((a: number, v: number) => a + v);
+    let answer = 0;
+    let newValues: number[];
+    let visited: boolean[];
+
+    const add = (value: Num | undefined): Num | undefined => {
+      if (newValues.length < 2 && value !== undefined) {
+        const k = input.makeKey(value.x, value.y);
+        if (!visited[k]) {
+          visited[k] = true;
+          newValues.push(value.value);
+        }
+      }
+      return value;
+    };
+
+    for (const { x, y, c } of input.symbolIterator()) {
+      if (c !== "*") {
+        continue;
+      }
+
+      newValues = [];
+      visited = [];
+      const up = add(input.getValueAt(x, y - 1, true, true));
+      const down = add(input.getValueAt(x, y + 1, true, true));
+      const left = add(input.getValueAt(x - 1, y, true, false));
+      const right = add(input.getValueAt(x + 1, y, false, true));
+
+      if (!up && !left) {
+        add(input.getValueAt(x - 1, y - 1, true, true));
+      }
+      if (!down && !left) {
+        add(input.getValueAt(x - 1, y + 1, true, true));
+      }
+      if (!up && !right) {
+        add(input.getValueAt(x + 1, y - 1, true, true));
+      }
+      if (!down && !right) {
+        add(input.getValueAt(x + 1, y + 1, true, true));
+      }
+
+      if (newValues.length === 2) {
+        answer += newValues[0] * newValues[1];
+      }
+    }
+
     return answer;
   }
 }

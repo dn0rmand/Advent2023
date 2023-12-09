@@ -3,7 +3,8 @@ import { Day } from "./tools/day.ts";
 type Hand = {
   cards: string;
   bid: number;
-  rank: number;
+  rank1: number;
+  rank2: number;
 };
 
 const CARD_VALUES = {
@@ -32,42 +33,44 @@ export class Day7 extends Day {
     super(7);
   }
 
-  getRank(cards: string, allowJoker: boolean): number {
+  getRanks(cards: string): number[] {
     const counts = cards.split("").reduce(
       (a, c) => {
-        a[c] = (a[c] || 0) + (c === "J" && allowJoker ? -1 : 1);
+        a[c] = (a[c] || 0) + (c === "J" ? -1 : 1);
         return a;
       },
-      { J: 0 }
+      { A: 0, K: 0, Q: 0, J: 0, T: 0, "9": 0, "8": 0, "7": 0, "6": 0, "5": 0, "4": 0, "3": 0, "2": 0 }
     );
 
-    const groups = Object.values(counts).filter((v) => {
-      return v !== undefined;
-    });
-    groups.sort((a, b) => b - a);
+    const groups = Object.values(counts).filter((v) => v);
 
-    let rank: number;
+    groups.sort((a, b) => Math.abs(b) - Math.abs(a));
+
+    let rank1: number;
 
     switch (Math.abs(groups[0])) {
       case 5:
-        rank = 6;
+        rank1 = 6;
         break;
       case 4:
-        rank = 5;
+        rank1 = 5;
         break;
       case 3:
-        rank = Math.abs(groups[1]) === 2 ? 4 : 3;
+        rank1 = Math.abs(groups[1]) === 2 ? 4 : 3;
         break;
       case 2:
-        rank = Math.abs(groups[1]) === 2 ? 2 : 1;
+        rank1 = Math.abs(groups[1]) === 2 ? 2 : 1;
         break;
       default:
-        rank = 0;
+        rank1 = 0;
         break;
     }
 
-    if (allowJoker && counts.J) {
-      let rank2: number;
+    let rank2: number = rank1;
+
+    if (counts.J && rank1 < 6) {
+      groups.sort((a, b) => b - a);
+
       switch (groups[0]) {
         case -5:
         case 5:
@@ -88,6 +91,9 @@ export class Day7 extends Day {
           break;
         default:
           switch (counts.J) {
+            case -5:
+              rank2 = 6;
+              break;
             case -4:
               rank2 = 6;
               break;
@@ -105,39 +111,39 @@ export class Day7 extends Day {
           }
           break;
       }
-      rank = Math.max(rank, rank2);
+
+      rank2 = Math.max(rank1, rank2);
     }
 
     for (const c of cards) {
-      rank = rank * 16 + (allowJoker ? CARD_VALUES[c.toLowerCase()] : CARD_VALUES[c]);
+      rank1 = rank1 * 16 + CARD_VALUES[c];
+      rank2 = rank2 * 16 + CARD_VALUES[c.toLowerCase()];
     }
-    return rank;
+
+    return [rank1, rank2];
   }
 
   loadInput(): Hand[] {
     return this.readDataFile().map((line) => {
       const [cards, bid] = line.split(" ");
-      return { cards, bid: +bid, rank: 0 };
+      const [rank1, rank2] = this.getRanks(cards);
+      return { cards, bid: +bid, rank1, rank2 };
     });
   }
 
   part1(input: Hand[]): number {
-    const sorted = input
-      .map((a) => ({ cards: a.cards, bid: a.bid, rank: this.getRank(a.cards, false) }))
-      .sort((a, b) => a.rank - b.rank);
+    const sorted = input.sort((a, b) => a.rank1 - b.rank1);
     const answer = sorted.reduce((a: number, h: Hand, i: number) => a + h.bid * (i + 1), 0);
 
     return answer;
   }
 
   part2(input: Hand[]): number {
-    const sorted = input
-      .map((a) => ({ cards: a.cards, bid: a.bid, rank: this.getRank(a.cards, true) }))
-      .sort((a, b) => a.rank - b.rank);
+    const sorted = input.sort((a, b) => a.rank2 - b.rank2);
     const answer = sorted.reduce((a: number, h: Hand, i: number) => a + h.bid * (i + 1), 0);
 
     return answer;
   }
 }
 
-new Day7().execute();
+// new Day7().execute();

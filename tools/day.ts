@@ -27,6 +27,8 @@ export abstract class Day {
   execute(): void {
     console.log(`--- Advent of Code day ${this.day} ---`);
 
+    this.timeStart("total");
+
     this.timeStart("input");
     const input = this.loadInput();
     this.timeEnd("input");
@@ -38,5 +40,7 @@ export abstract class Day {
     this.timeStart("part-2");
     console.log(`Part 2: ${this.part2(input)}`);
     this.timeEnd("part-2");
+
+    this.timeEnd("total");
   }
 }

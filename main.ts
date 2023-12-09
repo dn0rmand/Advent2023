@@ -23,15 +23,19 @@ function compare(a: TimeEntry, b: TimeEntry): number {
 
 console.debug = () => {};
 console.time = (key: string) => {
-  performance.mark(key + "$start");
+  if (key[0] == "@") {
+    performance.mark(key + "$start");
+  }
 };
 console.timeLog = (key: string, msg: string) => {
-  performance.mark(key + "$end");
-  const t = performance.measure(key, key + "$start", key + "$end");
-  times[key] = {
-    duration: t.duration,
-    message: `${t.duration}ms ${msg}`,
-  };
+  if (key[0] == "@") {
+    performance.mark(key + "$end");
+    const t = performance.measure(key, key + "$start", key + "$end");
+    times[key] = {
+      duration: t.duration,
+      message: `${t.duration}ms ${msg}`,
+    };
+  }
 };
 
 console.log("***************************");
@@ -39,15 +43,19 @@ console.log("*** Advent of Code 2023 ***");
 console.log("***************************");
 console.log("");
 
-console.time("advent-2023");
+console.time("@advent-2023");
 for (const day of days) {
+  const key = `@day${day.day}`;
+  const msg = `to execute both parts of day ${day.day}`;
+  console.time(key);
   day.execute();
+  console.timeLog(key, msg);
 }
-console.timeLog("advent-2023", "to execute them all");
+console.timeLog("@advent-2023", "to execute them all");
 
 console.log("");
-console.log(times["advent-2023"].message);
-times["advent-2023"].duration = 0; // For the sorting
+console.log(times["@advent-2023"].message);
+times["@advent-2023"].duration = 0; // For the sorting
 
 const order = Object.values(times).sort((a: TimeEntry, b: TimeEntry) => compare(b, a));
 
