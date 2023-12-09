@@ -1,4 +1,5 @@
 import { Day } from "./tools/day.ts";
+import { lcm } from "./tools/numberHelper.ts";
 
 type Node = { L: string; R: string };
 type Map = {
@@ -56,25 +57,10 @@ export class Day8 extends Day {
     return steps;
   }
 
-  gcd(a: number, b: number): number {
-    if (a < b) {
-      [a, b] = [b, a];
-    }
-
-    while (b !== 0) {
-      [a, b] = [b, a % b];
-    }
-    return a;
-  }
-
-  lcm(a: number, b: number): number {
-    return (a / this.gcd(a, b)) * b;
-  }
-
   part2(input: Map): number {
     const starts = Object.keys(input.nodes).filter((k) => k[k.length - 1] === "A");
     const steps = starts.map((start) => this.navigate(input, start));
-    const answer = steps.reduce((a, s) => (a ? this.lcm(a, s) : s), 0);
+    const answer = steps.reduce((a, s) => (a ? lcm(a, s) : s), 0);
 
     return answer;
   }
