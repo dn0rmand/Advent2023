@@ -10,37 +10,42 @@ export abstract class Day {
   abstract loadInput(): any;
 
   timeStart(name: string) {
-    const key = name.toLowerCase().replace("  ", "-");
+    const key = name.toLowerCase().replace('  ', '-');
     console.time(`day${this.day}:${key}`);
   }
 
   timeEnd(name: string) {
-    const key = name.toLowerCase().replace("  ", "-");
-    console.timeLog(`day${this.day}:${key}`, `to ${name === "input" ? "parse" : "execute"} ${name} of day ${this.day}`);
+    const key = name.toLowerCase().replace('  ', '-');
+    console.timeLog(`day${this.day}:${key}`, `to ${name === 'input' ? 'parse' : 'execute'} ${name} of day ${this.day}`);
   }
 
   readDataFile(): string[] {
     const data = Deno.readTextFileSync(`./data/day${this.day}.data`);
-    return data.split("\n");
+    return data.split('\n');
   }
 
   execute(): void {
-    console.log(`--- Advent of Code day ${this.day} ---`);
+    try {
+      console.log(`--- Advent of Code day ${this.day} ---`);
 
-    this.timeStart("total");
+      this.timeStart('total');
 
-    this.timeStart("input");
-    const input = this.loadInput();
-    this.timeEnd("input");
+      this.timeStart('input');
+      const input = this.loadInput();
+      this.timeEnd('input');
 
-    this.timeStart("part-1");
-    console.log(`Part 1: ${this.part1(input)}`);
-    this.timeEnd("part-1");
+      this.timeStart('part-1');
+      console.log(`Part 1: ${this.part1(input)}`);
+      this.timeEnd('part-1');
 
-    this.timeStart("part-2");
-    console.log(`Part 2: ${this.part2(input)}`);
-    this.timeEnd("part-2");
+      this.timeStart('part-2');
+      console.log(`Part 2: ${this.part2(input)}`);
+      this.timeEnd('part-2');
 
-    this.timeEnd("total");
+      this.timeEnd('total');
+    } catch (error) {
+      debugger;
+      throw error;
+    }
   }
 }
