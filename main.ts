@@ -10,6 +10,7 @@ import { Day8 } from './day8.ts';
 import { Day9 } from './day9.ts';
 import { Day10 } from './day10.ts';
 import { Day11 } from './day11.ts';
+import { Day12 } from './day12.ts';
 
 const days: Day[] = [
   new Day1(),
@@ -23,6 +24,7 @@ const days: Day[] = [
   new Day9(),
   new Day10(),
   new Day11(),
+  new Day12(),
 ];
 
 type TimeEntry = {
