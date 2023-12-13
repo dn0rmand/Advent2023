@@ -1,4 +1,4 @@
-import { gcd, factorial } from "./bigintHelper.ts";
+import { gcd, factorial } from './bigintHelper.ts';
 
 const ABS = (a: bigint) => (a < 0 ? -a : a);
 
@@ -13,13 +13,9 @@ export class Polynomial {
   private entries: Entry[] = [];
 
   constructor(values: number[]) {
-    this.values = values.map((v) => BigInt(v));
+    this.values = values.map(v => BigInt(v));
     this.entries = [...this.calculate([...this.values], 100n, 1n)];
     // this.validate();
-  }
-
-  private checkValue(value: bigint): bigint {
-    return value;
   }
 
   private *calculate(values: bigint[], maxPower: bigint, divisor: bigint): Generator<Entry> {
@@ -77,7 +73,7 @@ export class Polynomial {
     }
 
     if (values.length === 0 || power >= maxPower) {
-      throw "No polynomial";
+      throw new Error('No polynomial');
     }
 
     return { power, coefficient: values[0], divisor: 1n };
@@ -99,7 +95,7 @@ export class Polynomial {
     }
 
     if (value % mainDivisor !== 0n) {
-      throw "Error";
+      throw new Error('Error');
     }
 
     return value / mainDivisor;
@@ -109,7 +105,7 @@ export class Polynomial {
     for (let i = 0; i < this.values.length; i++) {
       const v = this.get(i);
       if (v !== this.values[i]) {
-        throw new Error("Error");
+        throw new Error('Error');
       }
     }
   }

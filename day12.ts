@@ -1,20 +1,22 @@
 import { Day } from './tools/day.ts';
+import { Uint46Array } from './tools/Uint46Array.ts';
 
 const MAX_WIDTH = 150;
+const MAX_KEY = 16000;
+
+const $memoize = new Uint46Array(MAX_KEY);
 
 class Input {
   mask: string[];
   counts: number[];
-  memoize: number[];
 
   constructor(mask: string[], counts: number[]) {
     this.mask = mask;
     this.counts = counts;
-    this.memoize = [];
   }
 
-  private makeKey(maskIndex: number, countIndex: number, current: number): number {
-    const key = (current * MAX_WIDTH + maskIndex) * MAX_WIDTH + countIndex;
+  private makeKey(maskIndex: number, countIndex: number): number {
+    const key = maskIndex * MAX_WIDTH + countIndex;
     return key;
   }
 
@@ -27,65 +29,67 @@ class Input {
     return false;
   }
 
-  private resolve(maskIndex: number, countIndex: number, current: number): number {
-    if (countIndex === this.counts.length) {
-      return current || this.hasMore(maskIndex) ? 0 : 1;
-    } else if (maskIndex === this.mask.length) {
-      return 0;
-    }
-
-    const expected = this.counts[countIndex];
-
-    if (current > expected) {
-      return 0;
-    }
-
-    const key = this.makeKey(maskIndex, countIndex, current);
-    if (this.memoize[key] !== undefined) {
-      return this.memoize[key];
-    }
-
-    const next = this.mask[maskIndex];
-    let total = 0;
-
-    if (next === '.') {
-      if (current) {
-        if (current !== expected) {
-          this.memoize[key] = 0;
-          return 0;
-        } else {
-          total = this.resolve(maskIndex + 1, countIndex + 1, 0);
-          this.memoize[key] = total;
-          return total;
-        }
-      } else {
-        total = this.resolve(maskIndex + 1, countIndex, 0);
-        this.memoize[key] = total;
-        return total;
+  private resolve(maskIndex: number, countIndex: number): number {
+    if (countIndex >= this.counts.length) {
+      if (this.hasMore(maskIndex)) {
+        return 0;
       }
+      return 1;
     }
-    if (next === '#') {
-      total = this.resolve(maskIndex + 1, countIndex, current + 1);
-      this.memoize[key] = total;
+
+    let key = this.makeKey(maskIndex, countIndex, 0);
+    let total = $memoize.get(key);
+
+    if (total !== undefined) {
       return total;
-    } else if (next === '?') {
-      if (expected === current) {
-        // as to be dot
-        total = this.resolve(maskIndex + 1, countIndex + 1, 0);
-      } else {
+    }
+
+    while (maskIndex < this.mask.length && this.mask[maskIndex] === '.') {
+      maskIndex++;
+    }
+
+    const nextCount = this.counts[countIndex];
+
+    if (maskIndex + nextCount >= this.mask.length) {
+      return $memoize.set(key, 0);
+    }
+
+    if (this.mask[maskIndex] === '#') {
+      if (maskIndex + nextCount >= this.mask.length) {
+        return $memoize.set(key, 0);
+      }
+      if (this.mask[maskIndex + nextCount] === '#') {
+        return $memoize.set(key, 0);
+      }
+      for (let l = 0; l < nextCount; l++) {
+        if (this.mask[maskIndex + l] === '.') {
+          return $memoize.set(key, 0);
+        }
+      }
+      return $memoize.set(key, this.resolve(maskIndex + nextCount + 1, countIndex + 1));
+    } else if (this.mask[maskIndex] === '?') {
+      let total = 0;
+      // Assume a #
+      if (maskIndex + nextCount >= this.mask.length) {
         total = 0;
-        if (!current) {
-          // try .
-          total += this.resolve(maskIndex + 1, countIndex, 0);
+      } else if (this.mask[maskIndex + nextCount] === '#') {
+        total = 0;
+      } else {
+        total = 1;
+        for (let l = 0; l < nextCount; l++) {
+          if (this.mask[maskIndex + l] === '.') {
+            total = 0;
+            break;
+          }
         }
-        // try #
-        total += this.resolve(maskIndex + 1, countIndex, current + 1);
+        if (total) {
+          total = this.resolve(maskIndex + nextCount + 1, countIndex + 1);
+        }
       }
-      this.memoize[key] = total;
-      return total;
+
+      return $memoize.set(key, total + this.resolve(maskIndex + 1, countIndex));
     } else {
-      this.memoize[key] = 0;
-      return 0;
+      throw new Error('Should not get here');
     }
   }
 
@@ -102,14 +106,15 @@ class Input {
     }
 
     let total;
-    this.memoize = [];
+
+    $memoize.clear();
 
     if (this.mask[this.mask.length - 1] !== '.') {
       this.mask.push('.');
-      total = this.resolve(0, 0, 0);
+      total = this.resolve(0, 0);
       this.mask.pop();
     } else {
-      total = this.resolve(0, 0, 0);
+      total = this.resolve(0, 0);
     }
 
     this.counts = oldCounts;
@@ -142,10 +147,12 @@ export class Day12 extends Day {
   }
 
   part2(inputs: Input[]): number {
+    const x = inputs[1].solve(true);
+
     const counts = inputs.map(input => input.solve(true));
     const answer = counts.reduce((a: number, c: number) => a + c, 0);
     return answer;
   }
 }
 
-// new Day12().execute();
+new Day12().execute();
