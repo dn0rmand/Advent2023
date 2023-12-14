@@ -1,27 +1,25 @@
 {
   "owner_id": 20724,
-  "event": "2023",
   "members": {
     "20724": {
+      "id": 20724,
       "last_star_ts": 0,
       "global_score": 0,
-      "stars": 0,
-      "completion_day_level": {},
+      "local_score": 0,
       "name": "Matt Ferlo",
-      "id": 20724,
-      "local_score": 0
+      "completion_day_level": {},
+      "stars": 0
     },
     "107354": {
-      "name": "Nick",
-      "id": 107354,
-      "local_score": 315,
-      "last_star_ts": 1702225910,
       "global_score": 0,
+      "last_star_ts": 1702225910,
+      "id": 107354,
+      "stars": 19,
       "completion_day_level": {
         "1": {
           "1": {
-            "get_star_ts": 1701451297,
-            "star_index": 168147
+            "star_index": 168147,
+            "get_star_ts": 1701451297
           },
           "2": {
             "get_star_ts": 1701457306,
@@ -34,18 +32,18 @@
             "get_star_ts": 1701497120
           },
           "2": {
-            "get_star_ts": 1701497417,
-            "star_index": 294464
+            "star_index": 294464,
+            "get_star_ts": 1701497417
           }
         },
         "3": {
           "1": {
-            "get_star_ts": 1701619229,
-            "star_index": 660054
+            "star_index": 660054,
+            "get_star_ts": 1701619229
           },
           "2": {
-            "get_star_ts": 1701621975,
-            "star_index": 669192
+            "star_index": 669192,
+            "get_star_ts": 1701621975
           }
         },
         "4": {
@@ -54,14 +52,14 @@
             "get_star_ts": 1701667811
           },
           "2": {
-            "get_star_ts": 1701669598,
-            "star_index": 797411
+            "star_index": 797411,
+            "get_star_ts": 1701669598
           }
         },
         "5": {
           "1": {
-            "get_star_ts": 1701760267,
-            "star_index": 1076833
+            "star_index": 1076833,
+            "get_star_ts": 1701760267
           },
           "2": {
             "star_index": 1395214,
@@ -70,8 +68,8 @@
         },
         "6": {
           "1": {
-            "get_star_ts": 1701888739,
-            "star_index": 1414838
+            "star_index": 1414838,
+            "get_star_ts": 1701888739
           },
           "2": {
             "get_star_ts": 1701889306,
@@ -84,14 +82,14 @@
             "star_index": 1517278
           },
           "2": {
-            "get_star_ts": 1701943364,
-            "star_index": 1525180
+            "star_index": 1525180,
+            "get_star_ts": 1701943364
           }
         },
         "8": {
           "1": {
-            "star_index": 1771102,
-            "get_star_ts": 1702055887
+            "get_star_ts": 1702055887,
+            "star_index": 1771102
           },
           "2": {
             "get_star_ts": 1702058570,
@@ -100,8 +98,8 @@
         },
         "9": {
           "1": {
-            "get_star_ts": 1702103515,
-            "star_index": 1851563
+            "star_index": 1851563,
+            "get_star_ts": 1702103515
           },
           "2": {
             "star_index": 1852567,
@@ -115,36 +113,33 @@
           }
         }
       },
-      "stars": 19
+      "name": "Nick",
+      "local_score": 315
     },
     "109673": {
-      "local_score": 0,
       "id": 109673,
-      "name": "Stephen Jessiman",
-      "stars": 0,
-      "completion_day_level": {},
+      "last_star_ts": 0,
       "global_score": 0,
-      "last_star_ts": 0
+      "local_score": 0,
+      "name": "Stephen Jessiman",
+      "completion_day_level": {},
+      "stars": 0
     },
     "120900": {
       "local_score": 0,
-      "id": 120900,
       "name": "Troy Barnes",
-      "stars": 0,
       "completion_day_level": {},
-      "global_score": 0,
-      "last_star_ts": 0
+      "stars": 0,
+      "id": 120900,
+      "last_star_ts": 0,
+      "global_score": 0
     },
     "147754": {
-      "local_score": 431,
-      "name": "Dominique Normand",
-      "id": 147754,
-      "global_score": 0,
       "completion_day_level": {
         "1": {
           "1": {
-            "get_star_ts": 1701447869,
-            "star_index": 154605
+            "star_index": 154605,
+            "get_star_ts": 1701447869
           },
           "2": {
             "get_star_ts": 1701453577,
@@ -167,8 +162,8 @@
             "star_index": 647468
           },
           "2": {
-            "get_star_ts": 1701624981,
-            "star_index": 679328
+            "star_index": 679328,
+            "get_star_ts": 1701624981
           }
         },
         "4": {
@@ -183,8 +178,8 @@
         },
         "5": {
           "1": {
-            "star_index": 1147202,
-            "get_star_ts": 1701788041
+            "get_star_ts": 1701788041,
+            "star_index": 1147202
           },
           "2": {
             "get_star_ts": 1701792013,
@@ -197,8 +192,8 @@
             "star_index": 1365929
           },
           "2": {
-            "get_star_ts": 1701871470,
-            "star_index": 1369578
+            "star_index": 1369578,
+            "get_star_ts": 1701871470
           }
         },
         "7": {
@@ -213,18 +208,18 @@
         },
         "8": {
           "1": {
-            "get_star_ts": 1702041262,
-            "star_index": 1736412
+            "star_index": 1736412,
+            "get_star_ts": 1702041262
           },
           "2": {
-            "star_index": 1738834,
-            "get_star_ts": 1702042323
+            "get_star_ts": 1702042323,
+            "star_index": 1738834
           }
         },
         "9": {
           "1": {
-            "star_index": 1935359,
-            "get_star_ts": 1702139574
+            "get_star_ts": 1702139574,
+            "star_index": 1935359
           },
           "2": {
             "star_index": 1936216,
@@ -237,8 +232,8 @@
             "star_index": 2105420
           },
           "2": {
-            "get_star_ts": 1702268869,
-            "star_index": 2134224
+            "star_index": 2134224,
+            "get_star_ts": 1702268869
           }
         },
         "11": {
@@ -263,21 +258,24 @@
         },
         "13": {
           "1": {
-            "star_index": 2459064,
-            "get_star_ts": 1702495617
+            "get_star_ts": 1702495617,
+            "star_index": 2459064
           },
           "2": {
-            "get_star_ts": 1702496631,
-            "star_index": 2460318
+            "star_index": 2460318,
+            "get_star_ts": 1702496631
           }
         }
       },
       "stars": 26,
-      "last_star_ts": 1702496631
+      "local_score": 431,
+      "name": "Dominique Normand",
+      "last_star_ts": 1702496631,
+      "global_score": 0,
+      "id": 147754
     },
     "151555": {
       "local_score": 468,
-      "id": 151555,
       "name": "Murray Edwards",
       "completion_day_level": {
         "1": {
@@ -302,8 +300,8 @@
         },
         "3": {
           "1": {
-            "get_star_ts": 1701591347,
-            "star_index": 571102
+            "star_index": 571102,
+            "get_star_ts": 1701591347
           },
           "2": {
             "get_star_ts": 1701591814,
@@ -312,8 +310,8 @@
         },
         "4": {
           "1": {
-            "star_index": 771557,
-            "get_star_ts": 1701666262
+            "get_star_ts": 1701666262,
+            "star_index": 771557
           },
           "2": {
             "get_star_ts": 1701666675,
@@ -322,12 +320,12 @@
         },
         "5": {
           "1": {
-            "get_star_ts": 1701753383,
-            "star_index": 1054028
+            "star_index": 1054028,
+            "get_star_ts": 1701753383
           },
           "2": {
-            "star_index": 1055838,
-            "get_star_ts": 1701753903
+            "get_star_ts": 1701753903,
+            "star_index": 1055838
           }
         },
         "6": {
@@ -342,12 +340,12 @@
         },
         "7": {
           "1": {
-            "get_star_ts": 1701931636,
-            "star_index": 1495043
+            "star_index": 1495043,
+            "get_star_ts": 1701931636
           },
           "2": {
-            "star_index": 1497390,
-            "get_star_ts": 1701932514
+            "get_star_ts": 1701932514,
+            "star_index": 1497390
           }
         },
         "8": {
@@ -356,14 +354,14 @@
             "get_star_ts": 1702011886
           },
           "2": {
-            "get_star_ts": 1702013396,
-            "star_index": 1663993
+            "star_index": 1663993,
+            "get_star_ts": 1702013396
           }
         },
         "9": {
           "1": {
-            "get_star_ts": 1702098530,
-            "star_index": 1829984
+            "star_index": 1829984,
+            "get_star_ts": 1702098530
           },
           "2": {
             "star_index": 1830985,
@@ -372,8 +370,8 @@
         },
         "10": {
           "1": {
-            "star_index": 1999337,
-            "get_star_ts": 1702185527
+            "get_star_ts": 1702185527,
+            "star_index": 1999337
           },
           "2": {
             "get_star_ts": 1702188245,
@@ -382,8 +380,8 @@
         },
         "11": {
           "1": {
-            "get_star_ts": 1702271856,
-            "star_index": 2138201
+            "star_index": 2138201,
+            "get_star_ts": 1702271856
           },
           "2": {
             "get_star_ts": 1702272383,
@@ -392,144 +390,144 @@
         },
         "12": {
           "1": {
-            "get_star_ts": 1702358485,
-            "star_index": 2284298
+            "star_index": 2284298,
+            "get_star_ts": 1702358485
           },
           "2": {
-            "star_index": 2286128,
-            "get_star_ts": 1702359166
+            "get_star_ts": 1702359166,
+            "star_index": 2286128
           }
         },
         "13": {
           "1": {
-            "star_index": 2385958,
-            "get_star_ts": 1702444204
+            "get_star_ts": 1702444204,
+            "star_index": 2385958
           },
           "2": {
-            "star_index": 2386436,
-            "get_star_ts": 1702444456
+            "get_star_ts": 1702444456,
+            "star_index": 2386436
           }
         }
       },
       "stars": 26,
-      "global_score": 25,
-      "last_star_ts": 1702444456
+      "id": 151555,
+      "last_star_ts": 1702444456,
+      "global_score": 25
     },
     "160656": {
-      "global_score": 0,
-      "completion_day_level": {},
-      "stars": 0,
-      "last_star_ts": 0,
-      "local_score": 0,
       "name": "MR Bednar",
-      "id": 160656
+      "local_score": 0,
+      "stars": 0,
+      "completion_day_level": {},
+      "id": 160656,
+      "global_score": 0,
+      "last_star_ts": 0
     },
     "188623": {
       "id": 188623,
+      "global_score": 0,
+      "last_star_ts": 1702417616,
       "name": "Eric Holton",
       "local_score": 66,
-      "last_star_ts": 1702417616,
       "stars": 5,
       "completion_day_level": {
         "1": {
           "1": {
-            "get_star_ts": 1702401714,
-            "star_index": 2343272
+            "star_index": 2343272,
+            "get_star_ts": 1702401714
           },
           "2": {
-            "get_star_ts": 1702409684,
-            "star_index": 2353832
+            "star_index": 2353832,
+            "get_star_ts": 1702409684
           }
         },
         "2": {
           "1": {
-            "star_index": 2354688,
-            "get_star_ts": 1702410260
+            "get_star_ts": 1702410260,
+            "star_index": 2354688
           },
           "2": {
-            "get_star_ts": 1702410578,
-            "star_index": 2355123
+            "star_index": 2355123,
+            "get_star_ts": 1702410578
           }
         },
         "3": {
           "1": {
-            "get_star_ts": 1702417616,
-            "star_index": 2365839
+            "star_index": 2365839,
+            "get_star_ts": 1702417616
           }
         }
-      },
-      "global_score": 0
+      }
     },
     "197653": {
-      "local_score": 0,
-      "name": "Trent Macomber",
       "id": 197653,
       "global_score": 0,
-      "stars": 0,
-      "completion_day_level": {},
-      "last_star_ts": 0
-    },
-    "198084": {
-      "local_score": 0,
-      "name": "Seshi Chemudugunta",
-      "id": 198084,
-      "global_score": 0,
-      "completion_day_level": {},
-      "stars": 0,
-      "last_star_ts": 0
-    },
-    "200180": {
-      "name": "Myron McMillin",
-      "id": 200180,
-      "local_score": 0,
       "last_star_ts": 0,
-      "global_score": 0,
+      "name": "Trent Macomber",
+      "local_score": 0,
       "stars": 0,
       "completion_day_level": {}
     },
-    "373368": {
-      "local_score": 0,
-      "name": "Prasanna Dupaguntla",
-      "id": 373368,
-      "global_score": 0,
+    "198084": {
       "completion_day_level": {},
       "stars": 0,
+      "local_score": 0,
+      "name": "Seshi Chemudugunta",
+      "last_star_ts": 0,
+      "global_score": 0,
+      "id": 198084
+    },
+    "200180": {
+      "completion_day_level": {},
+      "stars": 0,
+      "local_score": 0,
+      "name": "Myron McMillin",
+      "last_star_ts": 0,
+      "global_score": 0,
+      "id": 200180
+    },
+    "373368": {
+      "name": "Prasanna Dupaguntla",
+      "local_score": 0,
+      "stars": 0,
+      "completion_day_level": {},
+      "id": 373368,
+      "global_score": 0,
       "last_star_ts": 0
     },
     "471153": {
-      "local_score": 0,
-      "name": "Mahalakshmi Velayudhan",
-      "id": 471153,
       "global_score": 0,
+      "last_star_ts": 0,
+      "id": 471153,
       "stars": 0,
       "completion_day_level": {},
-      "last_star_ts": 0
+      "name": "Mahalakshmi Velayudhan",
+      "local_score": 0
     },
     "499187": {
-      "global_score": 0,
       "completion_day_level": {},
       "stars": 0,
-      "last_star_ts": 0,
       "local_score": 0,
       "name": "Yuanyuan Deng",
+      "last_star_ts": 0,
+      "global_score": 0,
       "id": 499187
     },
     "499224": {
-      "last_star_ts": 0,
       "global_score": 0,
-      "completion_day_level": {},
-      "stars": 0,
-      "name": null,
+      "last_star_ts": 0,
       "id": 499224,
+      "stars": 0,
+      "completion_day_level": {},
+      "name": null,
       "local_score": 0
     },
     "1503142": {
-      "last_star_ts": 1701745737,
       "completion_day_level": {
         "1": {
           "1": {
-            "get_star_ts": 1701705778,
-            "star_index": 936517
+            "star_index": 936517,
+            "get_star_ts": 1701705778
           },
           "2": {
             "get_star_ts": 1701729050,
@@ -542,31 +540,33 @@
             "star_index": 1044417
           },
           "2": {
-            "get_star_ts": 1701745737,
-            "star_index": 1045190
+            "star_index": 1045190,
+            "get_star_ts": 1701745737
           }
         }
       },
       "stars": 4,
-      "global_score": 0,
-      "id": 1503142,
+      "local_score": 60,
       "name": "Erin Martell",
-      "local_score": 60
+      "last_star_ts": 1701745737,
+      "global_score": 0,
+      "id": 1503142
     },
     "1503254": {
-      "local_score": 0,
-      "name": "Richa Gor",
-      "id": 1503254,
-      "global_score": 0,
-      "completion_day_level": {},
       "stars": 0,
-      "last_star_ts": 0
+      "completion_day_level": {},
+      "name": "Richa Gor",
+      "local_score": 0,
+      "global_score": 0,
+      "last_star_ts": 0,
+      "id": 1503254
     },
     "3777110": {
       "id": 3777110,
-      "name": "Pratik Dhumal",
-      "local_score": 131,
       "last_star_ts": 1702239965,
+      "global_score": 0,
+      "local_score": 131,
+      "name": "Pratik Dhumal",
       "completion_day_level": {
         "1": {
           "1": {
@@ -574,8 +574,8 @@
             "star_index": 1650977
           },
           "2": {
-            "star_index": 1654664,
-            "get_star_ts": 1702012025
+            "get_star_ts": 1702012025,
+            "star_index": 1654664
           }
         },
         "2": {
@@ -604,19 +604,19 @@
             "get_star_ts": 1702141973
           },
           "2": {
-            "get_star_ts": 1702220127,
-            "star_index": 2061371
+            "star_index": 2061371,
+            "get_star_ts": 1702220127
           }
         },
         "5": {
           "1": {
-            "get_star_ts": 1702239965,
-            "star_index": 2100659
+            "star_index": 2100659,
+            "get_star_ts": 1702239965
           }
         }
       },
-      "stars": 9,
-      "global_score": 0
+      "stars": 9
     }
-  }
+  },
+  "event": "2023"
 }
