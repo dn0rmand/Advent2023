@@ -1,8 +1,11 @@
 export abstract class Day {
   day: number;
+  private fileContent: string[];
 
   constructor(day: number) {
     this.day = day;
+    const data = Deno.readTextFileSync(`./data/day${this.day}.data`);
+    this.fileContent = data.split('\n');
   }
 
   abstract part1(input: any): number | string;
@@ -20,8 +23,7 @@ export abstract class Day {
   }
 
   readDataFile(): string[] {
-    const data = Deno.readTextFileSync(`./data/day${this.day}.data`);
-    return data.split('\n');
+    return this.fileContent;
   }
 
   execute(): void {
