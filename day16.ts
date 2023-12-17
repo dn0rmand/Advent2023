@@ -16,13 +16,24 @@ type State = {
 export class Day16 extends Day {
   width: number = 0;
   height: number = 0;
+  exits = new Uint8Array(25000);
+  splits = new Uint8Array(12200);
 
   constructor() {
     super(16);
   }
 
+  miniKey(state: State): number {
+    return state.y * this.width + state.x;
+  }
+
   makeKey(state: State): number {
-    return state.y * 1200 + state.x * 10 + state.direction;
+    return this.miniKey(state) * 10 + state.direction;
+  }
+
+  simpleKey(state: State): number {
+    const direction = state.direction === Direction.Down || state.direction === Direction.Up ? 0 : 1;
+    return this.miniKey(state) * 2 + direction;
   }
 
   loadInput(): string[] {
@@ -30,6 +41,12 @@ export class Day16 extends Day {
   }
 
   splitX(state: State): State[] {
+    const k = this.miniKey(state);
+    if (this.splits[k]) {
+      return [];
+    }
+    this.splits[k] = 1;
+
     return [
       { x: state.x - 1, y: state.y, direction: Direction.Left },
       { x: state.x + 1, y: state.y, direction: Direction.Right },
@@ -37,6 +54,12 @@ export class Day16 extends Day {
   }
 
   splitY(state: State): State[] {
+    const k = this.miniKey(state);
+    if (this.splits[k]) {
+      return [];
+    }
+    this.splits[k] = 1;
+
     return [
       { x: state.x, y: state.y - 1, direction: Direction.Up },
       { x: state.x, y: state.y + 1, direction: Direction.Down },
@@ -111,41 +134,51 @@ export class Day16 extends Day {
   }
 
   process(map: string[], start: State): number {
-    const WIDTH = map[0].length;
-    const HEIGHT = map.length;
+    let key: number;
+
+    key = this.simpleKey(start);
+    if (this.exits[key]) {
+      return 0;
+    }
 
     let states = [start];
 
-    const visited = new Set<number>();
-    const turnedOn = new Set<number>();
-    let key: number;
+    this.splits.fill(0);
 
+    const visited = new Uint8Array(this.height * this.width * 10);
+    const turnedOn = new Uint8Array(this.height * this.width);
+
+    let count = 0;
     while (states.length > 0) {
       const state = states[0];
       states.shift();
-      key = this.makeKey(state);
-      key = key - (key % 10); // Remove the direction
-      turnedOn.add(key);
+      key = this.miniKey(state);
+
+      if (!turnedOn[key]) {
+        turnedOn[key] = 1;
+        count++;
+      }
 
       for (const newState of this.move(map, state)) {
         if (newState.x < 0 || newState.y < 0 || newState.x >= this.width || newState.y >= this.height) {
+          this.exits[this.simpleKey(newState)] = 1;
           continue;
         }
         key = this.makeKey(newState);
-        if (visited.has(key)) {
-          continue;
+        if (!visited[key]) {
+          visited[key] = 1;
+          states.push(newState);
         }
-        visited.add(key);
-        states.push(newState);
       }
     }
 
-    return turnedOn.size;
+    return count;
   }
 
   part1(map: string[]): number {
     this.width = map[0].length;
     this.height = map.length;
+    this.exits.fill(0);
 
     const answer = this.process(map, { x: 0, y: 0, direction: Direction.Right });
     return answer;
@@ -154,6 +187,8 @@ export class Day16 extends Day {
   part2(map: string[]): number {
     this.width = map[0].length;
     this.height = map.length;
+
+    this.exits.fill(0);
 
     let max = 0;
 
