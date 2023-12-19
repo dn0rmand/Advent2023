@@ -8,5 +8,8 @@
   "prettier.printWidth": 128,
   "prettier.arrowParens": "avoid",
   "prettier.jsxSingleQuote": true,
-  "prettier.singleQuote": true
+  "prettier.singleQuote": true,
+  "debug.console.collapseIdenticalLines": false,
+  "debug.console.fontFamily": "Menlo",
+  "debug.console.wordWrap": false
 }
