@@ -238,4 +238,4 @@ export class Day19 extends Day {
   }
 }
 
-new Day19().execute();
+// new Day19().execute();
