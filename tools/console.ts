@@ -106,6 +106,10 @@ export class Console {
     Console.write('\r');
   }
 
+  static newLine() {
+    Console.write('\r\n');
+  }
+
   static color(color: string) {
     const c = Console.colors[color];
     if (c) {
