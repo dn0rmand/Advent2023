@@ -1,4 +1,5 @@
 import { Day } from './tools/day.ts';
+import { Point } from './tools/geometry.ts';
 
 // 0 means R,
 // 1 means D,
@@ -28,11 +29,6 @@ type Input = {
   direction: Direction;
   distance: number;
   color: number;
-};
-
-type Point = {
-  x: number;
-  y: number;
 };
 
 class Lagoon {

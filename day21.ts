@@ -1,11 +1,5 @@
 import { Day } from './tools/day.ts';
-
-type Point = {
-  x: number;
-  y: number;
-};
-
-type PointMap = Map<number, Point>;
+import { Point } from './tools/geometry.ts';
 
 type GardenMap = {
   map: boolean[][];
@@ -148,4 +142,4 @@ export class Day21 extends Day {
   }
 }
 
-new Day21().execute();
+// new Day21().execute();
