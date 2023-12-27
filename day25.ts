@@ -54,65 +54,134 @@ export class Day25 extends Day {
     }
 
     const r = Object.values(components);
-
+    for (const c of r) {
+      c.connections.sort((c1, c2) => c1.connections.length - c2.connections.length);
+    }
+    r.sort((c1, c2) => c1.connections.length - c2.connections.length);
     return r;
   }
 
-  canReach(from: Component, to: Component, visited: string[]): boolean {
-    if (from.name === to.name) {
-      return true;
-    }
-    visited.push(from.name);
-    for (const c of from.connections) {
-      if (visited.includes(c.name)) {
-        continue;
+  furthestPoint(from: Component): Component {
+    let states: Component[] = [from];
+
+    const visited = new Set<string>();
+
+    while (states.length) {
+      const newStates: Component[] = [];
+      for (const current of states) {
+        for (const to of current.connections) {
+          if (!visited.has(to.name)) {
+            visited.add(to.name);
+            newStates.push(to);
+          }
+        }
       }
-      if (this.canReach(c, to, visited)) {
-        return true;
+      if (newStates.length) {
+        states = newStates;
+      } else {
+        break;
       }
     }
 
-    return false;
+    return states[0];
   }
 
-  cut(components: Component[], index: number, count: number, cuts: string[]): boolean {
-    for (let i = index; i < components.length; i++) {
-      const from = components[i];
-      const fromConnections = from.connections;
-      if (from.connections.length === 1) {
-        continue; // don't cut the last one :)
-      }
-      for (const to of from.connections) {
-        const toConnections = to.connections;
-        // cut
-        from.connections = fromConnections.filter(c => c.name !== to.name);
-        to.connections = toConnections.filter(c => c.name !== from.name);
+  shortestPath(from: Component, to: Component): Component[] {
+    let states: { current: Component; path: Component[] }[] = [
+      {
+        current: from,
+        path: [from],
+      },
+    ];
 
-        cuts.push(`${from.name}-${to.name}`);
-        if (count === 1) {
-          if (!this.canReach(from, to, [])) {
-            debugger;
-          } else {
-            // nope!!!
-            return false;
-          }
-        } else if (this.cut(components, i + 1, count - 1, cuts)) {
-          return true;
+    const visited = new Set<string>();
+    visited.add(from.name);
+
+    while (states.length) {
+      const newStates: { current: Component; path: Component[] }[] = [];
+      for (const { current, path } of states) {
+        if (current.name === to.name) {
+          return path;
         }
-        cuts.pop();
+        for (const to of current.connections) {
+          if (!visited.has(to.name)) {
+            visited.add(to.name);
+            newStates.push({ current: to, path: [...path, to] });
+          }
+        }
+      }
+      states = newStates;
+    }
 
-        // restore
-        from.connections = fromConnections;
-        to.connections = toConnections;
+    return [];
+  }
+
+  groupSize(from: Component): number {
+    const visited = new Set<string>();
+    const components = [from];
+
+    while (components.length) {
+      const c = components.pop();
+      if (c === undefined) {
+        continue;
+      }
+      visited.add(c.name);
+      for (const c1 of c.connections) {
+        if (!visited.has(c1.name)) {
+          components.push(c1);
+        }
       }
     }
 
-    return false;
+    return visited.size;
+  }
+
+  makeCut(from: Component, to: Component) {
+    from.connections = from.connections.filter(c => c.name !== to.name);
+    to.connections = to.connections.filter(c => c.name !== from.name);
+  }
+
+  restoreLink(from: Component, to: Component) {
+    from.connections.push(to);
+    to.connections.push(from);
+  }
+
+  cut(A: Component, B: Component, count: number): number {
+    const path = this.shortestPath(A, B);
+
+    if (count === 0) {
+      if (path.length !== 0) {
+        return 0;
+      }
+      const a = this.groupSize(A);
+      const b = this.groupSize(B);
+      return a * b;
+    }
+
+    if (path.length === 0) {
+      return 0;
+    }
+
+    for (let i = 0; i < path.length - 1; i++) {
+      this.makeCut(path[i], path[i + 1]);
+    }
+
+    const v = this.cut(A, B, count - 1);
+    if (v === 0) {
+      for (let i = 0; i < path.length - 1; i++) {
+        this.restoreLink(path[i], path[i + 1]);
+      }
+    }
+
+    return v;
   }
 
   part1(input: Component[]): number {
-    this.cut(input, 0, 3, []);
-    return 0;
+    const A = this.furthestPoint(input[1]);
+    const B = this.furthestPoint(A);
+
+    const answer = this.cut(A, B, 3);
+    return answer;
   }
 
   part2(input: Component[]): string {
@@ -120,4 +189,4 @@ export class Day25 extends Day {
   }
 }
 
-new Day25().execute();
+// new Day25().execute();
