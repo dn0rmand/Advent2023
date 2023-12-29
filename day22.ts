@@ -12,11 +12,11 @@ type Brick = {
 };
 
 export class Day22 extends Day {
-  supports: Map<number, Set<number>>;
+  supports: number[][];
 
   constructor() {
     super(22);
-    this.supports = new Map();
+    this.supports = [];
   }
 
   loadInput(): Brick[] {
@@ -36,112 +36,89 @@ export class Day22 extends Day {
     return bricks;
   }
 
-  getSupports(brick: Brick): Set<number> {
-    let supports: Set<number> | undefined = this.supports.get(brick.id);
+  addSupport(up: number, down: number) {
+    const supports: number[] | undefined = this.supports[up];
     if (!supports) {
-      supports = new Set();
-      this.supports.set(brick.id, supports);
+      this.supports[up] = [down];
+    } else if (!supports.includes(down)) {
+      supports.push(down);
     }
-    return supports;
   }
 
   intersect(b1: Brick, b2: Brick): boolean {
     return intersect(b1.from, b1.to, b2.from, b2.to);
   }
 
-  touches(up: Brick, down: Brick): boolean {
-    if (up.id === down.id) {
-      return false;
-    }
-
-    if (up.from.z !== down.to.z + 1) {
-      return false;
-    }
-
-    const supports = this.getSupports(up);
-
-    if (supports.has(down.id)) {
-      return true;
-    }
-
-    if (this.intersect(up, down)) {
-      supports.add(down.id);
-      return true;
-    }
-
-    return false;
-  }
-
-  canMoveDown(bricks: Brick[], up: Brick, index: number): boolean {
+  moveDown(bricks: Brick[], up: Brick, index: number): number {
     if (up.from.z === 1) {
-      return false;
+      return 0;
     }
-    for (let i = index - 1; i >= 0; i--) {
+
+    let lowest = 0;
+    let supports: number[] = [];
+
+    for (let i = index - 1; lowest < up.from.z && i >= 0; i--) {
       const down = bricks[i];
-      if (this.touches(up, down)) {
-        return false;
+      if (this.intersect(up, down)) {
+        if (down.to.z > lowest) {
+          supports = [down.id];
+          lowest = down.to.z;
+        } else if (down.to.z === lowest) {
+          supports.push(down.id);
+        }
       }
     }
 
-    return true;
-  }
-
-  moveDown(bricks: Brick[], brick: Brick, index: number) {
-    while (this.canMoveDown(bricks, brick, index)) {
-      brick.from.z--;
-      brick.to.z--;
+    if (lowest < up.from.z) {
+      const diff = up.from.z - (lowest + 1);
+      up.to.z -= diff;
+      up.from.z -= diff;
+      supports.forEach(down => this.addSupport(up.id, down));
+      if (supports.length === 1) {
+        return supports[0];
+      } else {
+        return 0;
+      }
+    } else {
+      return 0;
     }
-    // Ensure all supports are calculated
-    for (let i = index - 1; i >= 0; i--) {
-      this.touches(brick, bricks[i]);
-    }
-  }
-
-  gravity(bricks: Brick[]) {
-    bricks.forEach((brick, index) => this.moveDown(bricks, brick, index));
   }
 
   part1(bricks: Brick[]): number {
-    // process fall
-    this.gravity(bricks);
-
     const excluded = new Set<number>();
 
-    for (let i = 0; i < bricks.length; i++) {
-      const b = bricks[i];
-      const supports = this.getSupports(b);
-      if (supports.size === 1) {
-        excluded.add([...supports.values()][0]);
+    bricks.forEach((brick, index) => {
+      const support = this.moveDown(bricks, brick, index);
+      if (support) {
+        excluded.add(support);
       }
-    }
+    });
 
     const total = bricks.length - excluded.size;
     return total;
-  }
-
-  explode(bricks: Brick[], brick: Brick, movers: Set<number>) {
-    if (movers.has(brick.id)) {
-      return; // already processed
-    }
-    movers.add(brick.id);
-    for (const other of bricks.filter(b => this.getSupports(b).has(brick.id))) {
-      let supported = false;
-      for (const id of this.getSupports(other).values()) {
-        if (!movers.has(id)) {
-          supported = true;
-        }
-      }
-      if (!supported) {
-        this.explode(bricks, other, movers);
-      }
-    }
   }
 
   part2(bricks: Brick[]): number {
     let total = 0;
     for (let i = 0; i < bricks.length; i++) {
       const movers = new Set<number>();
-      this.explode(bricks, bricks[i], movers);
+      movers.add(bricks[i].id);
+      for (let j = i + 1; j < bricks.length; j++) {
+        const currentId = bricks[j].id;
+        const supports = this.supports[currentId];
+        if (supports === undefined) {
+          continue;
+        }
+        let moves = true;
+        for (const id of supports) {
+          if (!movers.has(id)) {
+            moves = false;
+          }
+        }
+        if (moves) {
+          movers.add(currentId);
+        }
+      }
       total += movers.size - 1;
     }
     return total;

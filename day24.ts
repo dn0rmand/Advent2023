@@ -1,8 +1,8 @@
 import { Day } from './tools/day.ts';
 import { System } from './tools/equationSolver.ts';
 
-const MAX_VX = 100n;
-const MAX_VY = 100n;
+const MAX_VZ = 50n;
+const MAX_VY = 80n;
 
 type Hailstone = {
   x: bigint;
@@ -223,43 +223,68 @@ export class Day24 extends Day {
     const vys = this.distinct(stones.map(s => s.vy));
     const vzs = this.distinct(stones.map(s => s.vz));
 
+    const ymap = vys.reduce((a: Set<bigint>, v: bigint) => {
+      a.add(v);
+      return a;
+    }, new Set<bigint>());
+
     if (!result) {
-      for (let vy0 = -MAX_VY; !result && vy0 <= MAX_VY; vy0++) {
-        if (vys.includes(vy0)) {
-          continue;
-        }
+      for (let vy0 = 1n; !result && vy0 <= MAX_VY; vy0++) {
         for (const vz0 of vzs) {
-          result = this.trySolveXY(stones, 'yzx', vy0, vz0);
-          if (result) {
-            break;
+          if (!ymap.has(vy0)) {
+            result = this.trySolveXY(stones, 'yzx', vy0, vz0);
+            if (result) {
+              break;
+            }
+          }
+          if (!ymap.has(-vy0)) {
+            result = this.trySolveXY(stones, 'yzx', -vy0, vz0);
+            if (result) {
+              break;
+            }
           }
         }
       }
     }
 
     if (!result) {
-      for (let vy0 = -MAX_VY; !result && vy0 <= MAX_VY; vy0++) {
-        if (vys.includes(vy0)) {
-          continue;
-        }
+      for (let vy0 = 1n; !result && vy0 <= MAX_VY; vy0++) {
         for (const vx0 of vxs) {
-          result = this.trySolveXY(stones, 'xyz', vx0, vy0);
-          if (result) {
-            break;
+          if (!vys.includes(vy0)) {
+            result = this.trySolveXY(stones, 'xyz', vx0, vy0);
+            if (result) {
+              break;
+            }
+          }
+          if (!vys.includes(-vy0)) {
+            result = this.trySolveXY(stones, 'xyz', vx0, -vy0);
+            if (result) {
+              break;
+            }
           }
         }
       }
     }
 
     if (!result) {
-      for (let vx0 = -MAX_VX; !result && vx0 <= MAX_VX; vx0++) {
-        if (vxs.includes(vx0)) {
-          continue;
-        }
+      const zmap = vzs.reduce((a: Set<bigint>, v: bigint) => {
+        a.add(v);
+        return a;
+      }, new Set<bigint>());
+
+      for (let vz0 = 1n; !result && vz0 <= MAX_VZ; vz0++) {
         for (const vy0 of vys) {
-          result = this.trySolveXY(stones, 'xyz', vx0, vy0);
-          if (result) {
-            break;
+          if (!zmap.has(vz0)) {
+            result = this.trySolveXY(stones, 'zyx', vz0, vy0);
+            if (result) {
+              break;
+            }
+          }
+          if (!zmap.has(vz0)) {
+            result = this.trySolveXY(stones, 'zyx', -vz0, vy0);
+            if (result) {
+              break;
+            }
           }
         }
       }
