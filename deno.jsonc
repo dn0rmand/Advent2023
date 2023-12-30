@@ -1,5 +1,12 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.ts"
+    "start": "deno run --allow-read main.ts"
+  },
+  "lint": {
+    "include": ["**/*.ts"],
+    "exclude": ["board/"],
+    "rules": {
+      "exclude": ["no-inferrable-types"]
+    }
   }
 }

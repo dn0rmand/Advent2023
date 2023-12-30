@@ -1,6 +1,6 @@
 import { Day } from './tools/day.ts';
 import { Point } from './tools/geometry.ts';
-import { Console } from './tools/console.ts';
+import { BitArray } from './tools/BitArray.ts';
 
 const WALL = '#'.charCodeAt(0);
 const FREE = '.'.charCodeAt(0);
@@ -10,7 +10,6 @@ const LEFT = '<'.charCodeAt(0);
 const RIGHT = '>'.charCodeAt(0);
 
 type Fork = {
-  from: Point;
   to: Point;
   length: number;
   key: number;
@@ -20,104 +19,54 @@ type Input = {
   map: Uint8Array[];
   width: number;
   height: number;
-  forkSet: Map<number, Fork>;
-  forks: Fork[];
+  totalLength: number;
+  forks: Fork[][];
 };
 
 let VISITED_SIZE = 1;
 let WIDTH = 0;
 let HEIGHT = 0;
 
-class BitArray {
-  data: Uint8Array;
-
-  private constructor() {}
-
-  static fromSize(size: number) {
-    const a = new BitArray();
-
-    size = Math.ceil(size / 8);
-    a.data = new Uint8Array(size);
-    return a;
-  }
-
-  clone() {
-    const a = new BitArray();
-    a.data = Uint8Array.from(this.data);
-    return a;
-  }
-
-  set(index: number) {
-    const bit = index % 8;
-    const idx = (index - bit) / 8;
-    const mask = 2 ** bit;
-
-    this.data[idx] |= mask;
-  }
-
-  unset(index: number) {
-    const bit = index % 8;
-    const idx = (index - bit) / 8;
-    const mask = 2 ** bit;
-
-    this.data[idx] = (this.data[idx] | mask) - mask;
-  }
-
-  isSet(index: number): boolean {
-    const bit = index % 8;
-    const idx = (index - bit) / 8;
-    const mask = 2 ** bit;
-
-    return (this.data[idx] & mask) !== 0;
-  }
-}
-
 class State {
   x: number;
   y: number;
   visited: BitArray;
   steps: number;
+  key: number;
 
-  private constructor() {}
+  static makeKey(x: number, y: number) {
+    return x + y * WIDTH;
+  }
+
+  private constructor(x: number, y: number, steps: number, visited: BitArray) {
+    this.x = x;
+    this.y = y;
+    this.steps = steps;
+    this.visited = visited;
+    this.key = State.makeKey(x, y);
+  }
 
   static getStart(input: Input): State {
     HEIGHT = input.height;
     WIDTH = input.width;
     VISITED_SIZE = HEIGHT * WIDTH;
 
-    const s = new State();
+    const state = new State(1, 0, 0, BitArray.withSize(VISITED_SIZE));
 
-    s.x = 1;
-    s.y = 0;
-    s.steps = 0;
-    s.visited = BitArray.fromSize(VISITED_SIZE);
-    s.visited.set(State.makeKey(1, 0));
+    state.visited.set(state.key);
 
-    return s;
+    return state;
   }
 
-  clone(x: number, y: number, steps: number = 1): State {
-    const s = new State();
-    s.x = x;
-    s.y = y;
-    s.steps = this.steps + 1;
-    s.visited = this.visited.clone();
-    s.visited.set(this.shortKey);
-    return s;
-  }
-
-  static makeKey(x: number, y: number) {
-    return x + y * WIDTH;
-  }
-
-  get shortKey() {
-    return State.makeKey(this.x, this.y);
+  clone(x: number, y: number): State {
+    const state = new State(x, y, this.steps + 1, this.visited.clone());
+    state.visited.set(state.key);
+    return state;
   }
 
   jump(input: Input, slippery: boolean): { x1: number; y1: number }[] {
     let choices: { x1: number; y1: number }[];
 
-    let moved = false;
     while (true) {
       choices = [];
       for (const [ox, oy] of [
@@ -168,22 +117,19 @@ class State {
       }
 
       if (choices.length !== 1) {
-        if (moved) {
-          this.visited.set(this.shortKey);
-        }
         return choices;
       }
 
       this.x = choices[0].x1;
       this.y = choices[0].y1;
+      this.key = State.makeKey(this.x, this.y);
       this.steps++;
-      this.visited.set(this.shortKey);
-      moved = true;
+      this.visited.set(this.key);
     }
   }
 
   moves(input: Input, slippery: boolean): State[] {
-    let output: State[] = [];
+    const output: State[] = [];
 
     for (const { x1, y1 } of this.jump(input, slippery)) {
       const k = State.makeKey(x1, y1);
@@ -201,21 +147,25 @@ class State {
         switch (c) {
           case RIGHT:
             s.x += 1;
+            s.key++;
             break;
           case LEFT:
             s.x -= 1;
+            s.key++;
             break;
           case UP:
             s.y -= 1;
+            s.key -= WIDTH;
             break;
           case DOWN:
             s.y += 1;
+            s.key += WIDTH;
             break;
           default:
             throw 'Error';
         }
-        if (!s.visited.isSet(s.shortKey)) {
-          s.visited.set(s.shortKey);
+        if (!s.visited.isSet(s.key)) {
+          s.visited.set(s.key);
           s.steps++;
           output.push(s);
         }
@@ -237,47 +187,67 @@ export class Day23 extends Day {
       return new Uint8Array(r);
     });
 
-    const input = { map, width: map[0].length, height: map.length, forks: [], forkSet: new Map() };
+    const input = { map, width: map[0].length, height: map.length, forks: [], totalLength: 0 };
 
     HEIGHT = input.height;
     WIDTH = input.width;
     VISITED_SIZE = HEIGHT * WIDTH;
 
-    this.findForks(input, { x: 1, y: 0 }, { x: 1, y: 0 });
+    this.findForks(input, { x: 1, y: 0 }, { x: 1, y: 0 }, new Uint8Array(VISITED_SIZE));
     return input;
   }
 
   addFork(input: Input, from: Point, to: Point, length: number): boolean {
-    const key1 = (from.x + from.y * WIDTH) * VISITED_SIZE + (to.x + to.y * WIDTH);
-    if (input.forkSet.has(key1)) {
+    const k1 = State.makeKey(from.x, from.y);
+    const k2 = State.makeKey(to.x, to.y);
+    const f1 = { key: k1, length, to: from };
+    const f2 = { key: k2, length, to };
+
+    if ((input.forks[k2] || []).some(f => f.key === k1)) {
       return false;
     }
-    const key2 = (to.x + to.y * WIDTH) * VISITED_SIZE + (from.x + from.y * WIDTH);
-    if (input.forkSet.has(key2)) {
-      throw 'Error';
+    if ((input.forks[k1] || []).some(f => f.key === k2)) {
+      return false;
     }
-    const key = input.forks.length / 2;
 
-    const f1 = { from, to, key, length };
-    const f2 = { from: to, to: from, key, length };
+    input.totalLength += length;
 
-    input.forks.push(f1, f2);
-    input.forkSet.set(key1, { from, to, key, length });
-    input.forkSet.set(key2, { from: to, to: from, key, length });
+    // TO to FROM
+    if (!input.forks[k2]) {
+      input.forks[k2] = [f1];
+    } else {
+      input.forks[k2].push(f1);
+      input.forks[k2].sort((f1, f2) => f2.length - f1.length);
+    }
+
+    // FROM to TO
+    if (!input.forks[k1]) {
+      input.forks[k1] = [f2];
+    } else {
+      input.forks[k1].push(f2);
+      input.forks[k1].sort((f1, f2) => f2.length - f1.length);
+    }
+
     return true;
   }
 
-  findForks(input: Input, where: Point, start: Point) {
+  findForks(input: Input, where: Point, start: Point, visitedPoints: Uint8Array) {
     let previous = { ...start };
     let steps = 0;
 
     let { x, y } = where;
+    const wKey = State.makeKey(x, y);
+    if (visitedPoints[wKey]) {
+      return;
+    }
+    visitedPoints[wKey] = 1;
     if (previous.x !== x || previous.y !== y) {
       steps++;
     }
 
     while (true) {
-      let choices: Point[] = [];
+      const choices: Point[] = [];
+
       for (const [ox, oy] of [
         [0, -1],
         [0, 1],
@@ -296,13 +266,20 @@ export class Day23 extends Day {
           choices.push({ x: x1, y: y1 });
         }
       }
+
       if (choices.length !== 1) {
         const end = { x, y };
+        const endKey = State.makeKey(x, y);
+        if (visitedPoints[endKey]) {
+          break;
+        }
+        visitedPoints[endKey] = 0;
         if (this.addFork(input, start, end, steps)) {
           for (const w of choices) {
-            this.findForks(input, w, end);
+            this.findForks(input, w, end, visitedPoints);
           }
         }
+        visitedPoints[endKey] = 0;
         break;
       }
 
@@ -315,13 +292,13 @@ export class Day23 extends Day {
   }
 
   walkPart1(input: Input) {
-    let states: State[] = [State.getStart(input)];
+    const states: State[] = [State.getStart(input)];
 
-    let target = { x: input.width - 2, y: input.height - 1 };
+    const target = { x: input.width - 2, y: input.height - 1 };
     let max = 0;
 
     while (states.length > 0) {
-      let state = states.pop();
+      const state = states.pop();
       if (!state) {
         continue;
       }
@@ -339,49 +316,40 @@ export class Day23 extends Day {
         }
       }
     }
-    Console.eraseLine();
+
     return max;
   }
 
-  maxPart2: number = 0;
+  maxPart2 = 0;
 
-  walkPart2(input: Input, steps: number, x: number, y: number, visitedForks: Uint8Array, visitedPoints: Uint8Array): number {
+  walkPart2(input: Input, remaining: number, steps: number, x: number, y: number, visitedPoints: Uint8Array): number {
     if (x === input.width - 2 && y === input.height - 1) {
       if (steps > this.maxPart2) {
         this.maxPart2 = steps;
-        Console.eraseLine();
-        Console.write(`  ${this.maxPart2}`);
-        Console.gotoSOL();
       }
       return steps;
     }
 
     const key = State.makeKey(x, y);
-    if (visitedPoints[key]) {
-      return 0;
+    if (visitedPoints[key] || steps + remaining <= this.maxPart2) {
+      return this.maxPart2;
     }
-
-    const forks = input.forks.filter(f => {
-      if (f.from.x !== x || f.from.y !== y) {
-        return false;
-      }
-      if (visitedForks[f.key]) {
-        return false;
-      }
-      if (visitedPoints[State.makeKey(f.to.x, f.to.y)]) {
-        return false;
-      }
-      return true;
-    });
 
     visitedPoints[key] = 1;
 
-    let max = 0;
-    for (let f of forks) {
-      visitedForks[f.key] = 1;
-      const d = this.walkPart2(input, steps + f.length, f.to.x, f.to.y, visitedForks, visitedPoints);
+    const forks = (input.forks[key] || []).filter(f => !visitedPoints[f.key]);
+
+    let max = this.maxPart2;
+    let left = remaining;
+
+    forks.forEach(f => (left -= f.length));
+
+    for (const fork of forks) {
+      if (steps + fork.length + left <= this.maxPart2) {
+        break;
+      }
+      const d = this.walkPart2(input, left, steps + fork.length, fork.to.x, fork.to.y, visitedPoints);
       max = Math.max(max, d);
-      visitedForks[f.key] = 0;
     }
 
     visitedPoints[key] = 0;
@@ -396,8 +364,7 @@ export class Day23 extends Day {
 
   part2(input: Input): number {
     const visitedPoints = new Uint8Array(VISITED_SIZE);
-    const visitedForks = new Uint8Array(input.forks[input.forks.length - 1].key + 1);
-    const answer = this.walkPart2(input, 0, 1, 0, visitedForks, visitedPoints);
+    const answer = this.walkPart2(input, input.totalLength, 0, 1, 0, visitedPoints);
     return answer;
   }
 }
